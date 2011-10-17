@@ -1,35 +1,35 @@
 <div class="notification_templates form">
-<?php echo $form->create('NotificationTemplate',array("action" => "edit"));?>
-<?php echo $form->input('NotificationTemplate.id'); ?>
+<?php echo $this->Form->create('NotificationTemplate',array("action" => "edit"));?>
+<?php echo $this->Form->input('NotificationTemplate.id'); ?>
     
 <p>This tool is meant to be used by someone with limited knowledge of the database construction and CakePHP naming conventions.  <strong>It is not an end user tool. </strong></p>
 	<fieldset>
 	<legend><?php __('Who');?></legend>
 	<p>Who is this notification coming from?</p>
-	<?php echo $form->input('NotificationTemplate.from_name'); ?>
-	<?php echo $form->input('NotificationTemplate.from_email'); ?>
+	<?php echo $this->Form->input('NotificationTemplate.from_name'); ?>
+	<?php echo $this->Form->input('NotificationTemplate.from_email'); ?>
     </fieldset>
 	<fieldset>
 	<legend><?php __('What');?></legend>
-	<?php echo $form->input('NotificationTemplate.name', array('label' => 'Subject')); ?>
-	<?php echo $form->input('NotificationTemplate.replacement_arrays', array('after' => '[REPLACE]~SelectModel.select_field~FromModel.from_field~WhereModel.where_field')); ?>
-	<?php echo $form->input('NotificationTemplate.html', array('type' => 'richtext', 'ckeSettings' => array('buttons' => array('Bold','Italic','Underline','FontSize','TextColor','BGColor','-','NumberedList','BulletedList','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','-', 'Image')))); ?>
-	<?php echo $form->input('NotificationTemplate.text', array('label' => 'Plain Text Version')); ?>
+	<?php echo $this->Form->input('NotificationTemplate.name', array('label' => 'Subject')); ?>
+	<?php echo $this->Form->input('NotificationTemplate.replacement_arrays', array('after' => '[REPLACE]~SelectModel.select_field~FromModel.from_field~WhereModel.where_field')); ?>
+	<?php echo $this->Form->input('NotificationTemplate.html', array('type' => 'richtext', 'ckeSettings' => array('buttons' => array('Bold','Italic','Underline','FontSize','TextColor','BGColor','-','NumberedList','BulletedList','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','-', 'Image')))); ?>
+	<?php echo $this->Form->input('NotificationTemplate.text', array('label' => 'Plain Text Version')); ?>
 	</fieldset>
     <fieldset>
     <legend><?php __('Where'); ?></legend>
 	<p>Where are we sending this notification? Looking it up in the database, or a specifying the address? (Add additional after saves)</p>
-    <?php echo $form->input('Usability.recipient_type', array('type' => 'radio', 'options' => array('Specify Address', 'Lookup Address'))); ?>
-	<?php echo $form->input('NotificationTemplate.notification_recipient_lookup', array('empty' => true, 'label' => $this->Html->link(__('Lookup Method', true), array('plugin' => null, 'controller' => 'enumerations', 'action' => 'index', 'filter' => 'NOTIFICATION_RECIPIENT_ARRAY', 'admin' => 1), array('class' => 'dialog', 'title' => 'Edit Recipient Model List')))); ?>
-	<?php echo $form->input('NotificationTemplate.notification_recipient_specified', array('label' => 'Email')); ?>
-	<?php echo $form->input('NotificationTemplate.recipients_array'); ?>
+    <?php echo $this->Form->input('Usability.recipient_type', array('type' => 'radio', 'options' => array('Specify Address', 'Lookup Address'))); ?>
+	<?php echo $this->Form->input('NotificationTemplate.notification_recipient_lookup', array('empty' => true, 'label' => $this->Html->link(__('Lookup Method', true), array('plugin' => null, 'controller' => 'enumerations', 'action' => 'index', 'filter' => 'NOTIFICATION_RECIPIENT_ARRAY', 'admin' => 1), array('class' => 'dialog', 'title' => 'Edit Recipient Model List')))); ?>
+	<?php echo $this->Form->input('NotificationTemplate.notification_recipient_specified', array('label' => 'Email')); ?>
+	<?php echo $this->Form->input('NotificationTemplate.recipients_array'); ?>
     
     <?php 
-	if ($form->value('NotificationTemplate.recipients_array') != '') { 
+	if ($this->Form->value('NotificationTemplate.recipients_array') != '') { 
 	?>
     	<h4>Current Recipients</h4>
     <?php
-		$recipients = explode(',', $form->value('NotificationTemplate.recipients_array')); 
+		$recipients = explode(',', $this->Form->value('NotificationTemplate.recipients_array')); 
 		foreach ($recipients as $recipient) {
 	?>
     		<div class="notification-template-recipient"><?php echo $recipient; ?> (to do : add delete button)</div>
@@ -41,23 +41,23 @@
     </fieldset>
     <fieldset>
     <legend><?php __('When'); ?></legend>
-	<?php echo $form->input('NotificationTemplate.date_array'); ?>
+	<?php echo $this->Form->input('NotificationTemplate.date_array'); ?>
     </fieldset>
     <fieldset>
     <legend><?php __('Why'); ?></legend>
 	<p>A brief description of the notification so that you, or the next person who edits this condition can remember why you set this notification up in the first place.</p>
-	<?php echo $form->input('Condition.description'); ?>
+	<?php echo $this->Form->input('Condition.description'); ?>
     </fieldset>
     <!--fieldset>
 	<legend><?php __('How'); ?></legend>
 	<p>We're sending the notication when these save conditions are met on a record. For example, if someone saves a task, we would use tasks, as the plugin, tasks, as the controller, and the action probably as admin_edit.  The extra condition field is used if it should also match something like a type of record.  Like an task which is "Follow Up" type.</p>
-	<?php #echo $form->input('Condition.id'); ?>
-	<?php #echo $form->input('Condition.plugin', array('empty' => true)); ?>
-	<?php #echo $form->input('Condition.controller', array('empty' => true)); ?>
-	<?php #echo $form->input('Condition.action'); ?>
-	<?php #echo $form->input('Condition.condition', array('label' => 'Extra Condition', 'after' => 'Model.field.operator.value (available operators = != <= >= < >)')); ?>
+	<?php #echo $this->Form->input('Condition.id'); ?>
+	<?php #echo $this->Form->input('Condition.plugin', array('empty' => true)); ?>
+	<?php #echo $this->Form->input('Condition.controller', array('empty' => true)); ?>
+	<?php #echo $this->Form->input('Condition.action'); ?>
+	<?php #echo $this->Form->input('Condition.condition', array('label' => 'Extra Condition', 'after' => 'Model.field.operator.value (available operators = != <= >= < >)')); ?>
     </fieldset-->
-<?php echo $form->end('Save Template');?>
+<?php echo $this->Form->end('Save Template');?>
 </div>
 
 
@@ -68,7 +68,7 @@ echo $this->Html->link(__('List Notifications', true), array('plugin' => 'notifi
 echo $this->Html->link(__('Run Queue', true), array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'run_queue', 'admin' => 1));
 // set the contextual menu items
 /*
-$menu->setValue(array(
+$this->Menu->setValue(array(
 	array(
 		'heading' => 'Notification Templates',
 		'items' => array(

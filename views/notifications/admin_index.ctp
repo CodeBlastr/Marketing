@@ -53,7 +53,7 @@ echo $this->Html->link(__('New Template', true), array('plugin' => 'notification
 echo $this->Html->link(__('List Templates', true), array('plugin' => 'notifications', 'controller' => 'notification_templates', 'action' => 'index', 'admin' => 1));
 // set the contextual menu items 
 /*
-$menu->setValue(array(
+$this->Menu->setValue(array(
 	array(
 		'heading' => 'Notifications',
 		'items' => array(
