@@ -63,7 +63,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 
 	function __getClassMethods($ctrlName = null) {
 		#find base methods for later removal
-		App::import('Core', 'File');
+		App::uses('File', 'Utility');
 		$Controllers = Configure::listObjects('controller');
 		$appIndex = array_search('App', $Controllers);
 		if ($appIndex !== false ) {
