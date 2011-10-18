@@ -52,7 +52,7 @@ echo $this->Html->link(__('List Notifications', true), array('plugin' => 'notifi
 echo $this->Html->link(__('Run Queue', true), array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'run_queue', 'admin' => 1));
 // set the contextual menu items
 /*
-$this->Menu->setValue(array(
+echo $this->Element('context_menu', array('menus' => array(
 	array(
 		'heading' => 'Notification Templates',
 		'items' => array(
@@ -66,6 +66,5 @@ $this->Menu->setValue(array(
 			$this->Html->link(__('Run Queue', true), array('plugin' => 'notifications', 'controller' => 'notifications', 'action' => 'run_queue', 'admin' => 1)),
 			 )
 		),
-	)
-); */
+	))); */
 ?>
