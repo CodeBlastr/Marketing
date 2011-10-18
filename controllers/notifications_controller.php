@@ -40,7 +40,7 @@ class NotificationsController extends NotificationsAppController {
 			# I believe this was originally conceived if you need to send the same notification
 			# on multiple dates, and is not actually supported
 			$dateArray = unserialize($notification['Notification']['date_array']);
-			# This variable contains $this->data from when the notification was saved.
+			# This variable contains $this->request->data from when the notification was saved.
 			# All the information possible to draw from is in this data_array.
 			$thisData = unserialize($notification['Notification']['data_array']);
 			# This variable contains all of the recipients who should receive the mail
@@ -85,16 +85,16 @@ class NotificationsController extends NotificationsAppController {
 			# the calculated send date
 			$sendDate = date('Y-m-d H:i:s', strtotime('+'.$delay.' day', $compareDate));
 			# save the 
-			$this->data['Notification']['id'] = $id;
-			$this->data['Notification']['send_date'] = $sendDate;
-			if ($this->Notification->save($this->data)) {
+			$this->request->data['Notification']['id'] = $id;
+			$this->request->data['Notification']['send_date'] = $sendDate;
+			if ($this->Notification->save($this->request->data)) {
 				echo 'notification send date updated';
 			}
 		} else {
 			# if send date array is blank send date is now
-			$this->data['Notification']['id'] = $id;
-			$this->data['Notification']['send_date'] = date('Y-m-d H:i:s');
-			if ($this->Notification->save($this->data)) {
+			$this->request->data['Notification']['id'] = $id;
+			$this->request->data['Notification']['send_date'] = date('Y-m-d H:i:s');
+			if ($this->Notification->save($this->request->data)) {
 				echo 'notification send date updated';
 			}
 		}

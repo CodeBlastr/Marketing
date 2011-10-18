@@ -28,8 +28,8 @@ class NotificationTemplatesController extends NotificationsAppController {
 	}
 	
 	function admin_edit($id = null)	{
-		if (!empty($this->data)) {
-			if ($this->NotificationTemplate->save($this->data))	{
+		if (!empty($this->request->data)) {
+			if ($this->NotificationTemplate->save($this->request->data))	{
 				$this->Session->setFlash(__('The NotificationTemplate has been updated.', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
@@ -37,8 +37,8 @@ class NotificationTemplatesController extends NotificationsAppController {
 			}
 		}
 		
-		if (empty($this->data)) {
-			$this->data = $this->NotificationTemplate->find('first', array(
+		if (empty($this->request->data)) {
+			$this->request->data = $this->NotificationTemplate->find('first', array(
 				'conditions' => array(
 					'NotificationTemplate.id' => $id
 					),
@@ -47,7 +47,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 					)
 				)
 			);
-			$this->set('template', $this->data);
+			$this->set('template', $this->request->data);
 			
 			$notificationRecipientLookups = $this->NotificationTemplate->NotificationRecipientLookup->find('list', array('conditions' => array('NotificationRecipientLookup.type' => 'NOTIFICATION_RECIPIENT_LOOKUP')));
 			$notifieeTypes = $this->NotificationTemplate->NotifieeType->find('list', array('conditions' => array('NotifieeType.type' => 'NOTIFIEE_TYPE')));
@@ -100,7 +100,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 	}
 	
 	function admin_get_methods() {
-		$ctrlName = $this->data['Condition']['controller'];
+		$ctrlName = $this->request->data['Condition']['controller'];
 		$methods = $this->__getClassMethods($ctrlName);
 		$this->set('methods', $methods);
 	}
