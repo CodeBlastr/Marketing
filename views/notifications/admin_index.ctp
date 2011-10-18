@@ -1,5 +1,5 @@
 <div class="notifications index">
-<h2><?php __('Notifications');?></h2>
+<h2><?php echo __('Notifications');?></h2>
 <p>
 <?php
 echo $this->Paginator->counter(array(

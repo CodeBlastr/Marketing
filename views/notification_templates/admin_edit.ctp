@@ -4,20 +4,20 @@
     
 <p>This tool is meant to be used by someone with limited knowledge of the database construction and CakePHP naming conventions.  <strong>It is not an end user tool. </strong></p>
 	<fieldset>
-	<legend><?php __('Who');?></legend>
+	<legend><?php echo __('Who');?></legend>
 	<p>Who is this notification coming from?</p>
 	<?php echo $this->Form->input('NotificationTemplate.from_name'); ?>
 	<?php echo $this->Form->input('NotificationTemplate.from_email'); ?>
     </fieldset>
 	<fieldset>
-	<legend><?php __('What');?></legend>
+	<legend><?php echo __('What');?></legend>
 	<?php echo $this->Form->input('NotificationTemplate.name', array('label' => 'Subject')); ?>
 	<?php echo $this->Form->input('NotificationTemplate.replacement_arrays', array('after' => '[REPLACE]~SelectModel.select_field~FromModel.from_field~WhereModel.where_field')); ?>
 	<?php echo $this->Form->input('NotificationTemplate.html', array('type' => 'richtext', 'ckeSettings' => array('buttons' => array('Bold','Italic','Underline','FontSize','TextColor','BGColor','-','NumberedList','BulletedList','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','-', 'Image')))); ?>
 	<?php echo $this->Form->input('NotificationTemplate.text', array('label' => 'Plain Text Version')); ?>
 	</fieldset>
     <fieldset>
-    <legend><?php __('Where'); ?></legend>
+    <legend><?php echo __('Where'); ?></legend>
 	<p>Where are we sending this notification? Looking it up in the database, or a specifying the address? (Add additional after saves)</p>
     <?php echo $this->Form->input('Usability.recipient_type', array('type' => 'radio', 'options' => array('Specify Address', 'Lookup Address'))); ?>
 	<?php echo $this->Form->input('NotificationTemplate.notification_recipient_lookup', array('empty' => true, 'label' => $this->Html->link(__('Lookup Method', true), array('plugin' => null, 'controller' => 'enumerations', 'action' => 'index', 'filter' => 'NOTIFICATION_RECIPIENT_ARRAY', 'admin' => 1), array('class' => 'dialog', 'title' => 'Edit Recipient Model List')))); ?>
@@ -40,16 +40,16 @@
     
     </fieldset>
     <fieldset>
-    <legend><?php __('When'); ?></legend>
+    <legend><?php echo __('When'); ?></legend>
 	<?php echo $this->Form->input('NotificationTemplate.date_array'); ?>
     </fieldset>
     <fieldset>
-    <legend><?php __('Why'); ?></legend>
+    <legend><?php echo __('Why'); ?></legend>
 	<p>A brief description of the notification so that you, or the next person who edits this condition can remember why you set this notification up in the first place.</p>
 	<?php echo $this->Form->input('Condition.description'); ?>
     </fieldset>
     <!--fieldset>
-	<legend><?php __('How'); ?></legend>
+	<legend><?php echo __('How'); ?></legend>
 	<p>We're sending the notication when these save conditions are met on a record. For example, if someone saves a task, we would use tasks, as the plugin, tasks, as the controller, and the action probably as admin_edit.  The extra condition field is used if it should also match something like a type of record.  Like an task which is "Follow Up" type.</p>
 	<?php #echo $this->Form->input('Condition.id'); ?>
 	<?php #echo $this->Form->input('Condition.plugin', array('empty' => true)); ?>

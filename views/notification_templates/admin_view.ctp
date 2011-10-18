@@ -2,7 +2,7 @@
 <h2>Notification Template</h2>
 
 	 <div class="notifications_template data">
-		<h6><?php __('Default Data') ?></h6>
+		<h6><?php echo __('Default Data') ?></h6>
 		<ul class="default datalist">
         <li>Subject : <?php echo $notificationTemplate['NotificationTemplate']['name'];  ?></li>
 		<li>HTML Content : <?php echo $notificationTemplate['NotificationTemplate']['html'];  ?></li>
