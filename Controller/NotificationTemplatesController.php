@@ -1,10 +1,11 @@
 <?php
 class NotificationTemplatesController extends NotificationsAppController {
 
-	var $name = 'NotificationTemplates';
-	var $components = array('PluginList', 'ControllerList');
-	var $helpers = array('Cke');
-	var $paginate = array('limit' => 10, 'order' => array('NotificationTemplate.created' => 'desc'));
+	public $name = 'NotificationTemplates';
+	public $uses = 'Notifications.NotificationTemplate';
+	public $components = array('PluginList', 'ControllerList');
+	public $helpers = array('Cke');
+	public $paginate = array('limit' => 10, 'order' => array('NotificationTemplate.created' => 'desc'));
 
 	function admin_index() {
 		$notificationTemplates = $this->NotificationTemplate->find('all');

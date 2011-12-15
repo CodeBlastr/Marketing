@@ -6,8 +6,9 @@
  * @todo			Make notification belong to notification template, and stop the double up of information.  You should only have fields in notification which have to be calculated from the template (ie. send date, recipients, actual message even).
  */
 class NotificationsController extends NotificationsAppController {
-	var $name = 'Notifications';
-	var $allowedActions = array('admin_run_queue');
+	public $name = 'Notifications';
+	public $uses = 'Notifications.Notification';
+	public $allowedActions = array('admin_run_queue');
 
 
 
