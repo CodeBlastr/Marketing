@@ -12,7 +12,7 @@ class NotificationsController extends NotificationsAppController {
 
 
 
-	function admin_index() {
+	function index() {
 		$this->Notification->recursive = 0;
 		$this->set('notifications', $this->paginate());
 	}
@@ -21,7 +21,7 @@ class NotificationsController extends NotificationsAppController {
 	/**
 	 * This runs notifications
 	 */
-	function admin_run_queue() {
+	function run_queue() {
 		$this->render(false);
 		# select notifcations from the queue which haven't been sent, and the send date is now or older
 		$notifications = $this->Notification->find('all',array(
