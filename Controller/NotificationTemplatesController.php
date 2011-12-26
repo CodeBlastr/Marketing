@@ -7,12 +7,12 @@ class NotificationTemplatesController extends NotificationsAppController {
 	public $helpers = array('Cke');
 	public $paginate = array('limit' => 10, 'order' => array('NotificationTemplate.created' => 'desc'));
 
-	function admin_index() {
+	function index() {
 		$notificationTemplates = $this->NotificationTemplate->find('all');
 		$this->set('notificationTemplates', $this->paginate());
 	}
 	
-	function admin_view($id = null) {
+	function view($id = null) {
 		if (!$id) {
 			$this->flash(__('Invalid NotificationTemplate', true), array('action'=>'index'));
 		}
@@ -28,7 +28,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 		}
 	}
 	
-	function admin_edit($id = null)	{
+	function edit($id = null)	{
 		if (!empty($this->request->data)) {
 			if ($this->NotificationTemplate->save($this->request->data))	{
 				$this->Session->setFlash(__('The NotificationTemplate has been updated.', true));
@@ -100,7 +100,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 		return $methods;
 	}
 	
-	function admin_get_methods() {
+	function get_methods() {
 		$ctrlName = $this->request->data['Condition']['controller'];
 		$methods = $this->__getClassMethods($ctrlName);
 		$this->set('methods', $methods);
