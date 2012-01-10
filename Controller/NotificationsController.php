@@ -49,6 +49,9 @@ class NotificationsController extends NotificationsAppController {
 			# thisDataLookup = where in thisData to find the starting id
 			# find = the query to run
 			# recipient = the field we were looking for from the find
+			
+			debug('Get rid of print_rReverse and do serialize() unserialize() instead');
+			break;
 			$recipientData = print_rReverse($notification['Notification']['recipients_array']);
 			#next up, change replacements to an actual array
 			//$replacementsData = _print_rReverse($notification['Notification']['replacements_array']);
