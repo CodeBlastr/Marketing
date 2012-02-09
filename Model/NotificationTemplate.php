@@ -2,8 +2,8 @@
 
 class NotificationTemplate extends NotificationsAppModel {
 
-	var $name = 'NotificationTemplate'; 
-	
+	var $name = 'NotificationTemplate';
+
 	var $hasMany = array(
 		'Notification'=>array(
 			'className'=>'Notifications.Notification',
@@ -11,7 +11,7 @@ class NotificationTemplate extends NotificationsAppModel {
 			'dependent' => false,
 		),
 	);
-	
+
 	var $belongsTo = array(
 		'NotifieeType' => array(
 			'className' => 'Enumeration',
@@ -70,19 +70,19 @@ class NotificationTemplate extends NotificationsAppModel {
 			'order' => ''
 		)
 	);
-	
-	
+
+
 	/**
-	 * Create an unsent notification 
-	 * 
-	 * @todo  Right now this looks like data duplication.  Each of those fields could have a function act on them in the future so it is necessary for the time being to have this structure. 
+	 * Create an unsent notification
+	 *
+	 * @todo  Right now this looks like data duplication.  Each of those fields could have a function act on them in the future so it is necessary for the time being to have this structure.
 	 */
 	function templateNotification($data) {
 		if (!empty($data['NotificationTemplate']['id'])) {
 			# find the template to make a notification from
-			$notificationTemplate = $this->findbyId($data['NotificationTemplate']['id']);
+			$notificationTemplate = $this->find('first', array('conditions'=>array('id'=>$data['NotificationTemplate']['id'])));
 			if (!empty($notificationTemplate)) {
-				# setup notification data 
+				# setup notification data
 				$notification['Notification']['is_sent'] = 0;
 				$notification['Notification']['send_date'] = null;
 				$notification['Notification']['data_array'] = serialize($data);
@@ -97,7 +97,7 @@ class NotificationTemplate extends NotificationsAppModel {
 				$notification['Notification']['notifiee_value'] = $notificationTemplate['NotificationTemplate']['notifiee_value'];
 				$notification['Notification']['recipients_array'] = $notificationTemplate['NotificationTemplate']['recipients_array'];
 				$notification['Notification']['date_array'] = $notificationTemplate['NotificationTemplate']['date_array'];
-		
+
 				if ($this->Notification->save($notification)) {
 					echo 'this is in the notificaton template model';
 					return true;
@@ -109,7 +109,7 @@ class NotificationTemplate extends NotificationsAppModel {
 			}
 		} else {
 			return false;
-		}		
+		}
 	}
 
 }
