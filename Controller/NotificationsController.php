@@ -1,5 +1,7 @@
 <?php
-/** 
+App::uses('NotificationsAppController', 'Notifications.Controller');
+
+/**
  * @todo 			Add documentation
  * @todo			Move much of this to the model.
  * @todo			Make the view much better with fake fields, that fill the actual template data values.
@@ -16,8 +18,8 @@ class NotificationsController extends NotificationsAppController {
 		$this->Notification->recursive = 0;
 		$this->set('notifications', $this->paginate());
 	}
-	
-	
+
+
 	/**
 	 * This runs notifications
 	 */
@@ -28,7 +30,7 @@ class NotificationsController extends NotificationsAppController {
 			'conditions' => array(
 				'Notification.is_sent' => 0,
 				'OR' => array(
-					'Notification.send_date' => null, 
+					'Notification.send_date' => null,
 					'Notification.send_date <' => date('Y-m-d H:i:s'),
 					)
 				),
@@ -36,7 +38,7 @@ class NotificationsController extends NotificationsAppController {
 				'Notification.send_date'
 				),
 			'limit' => 100,
-			));	
+			));
 		foreach ($notifications as $notification) {
 			# I believe this was originally conceived if you need to send the same notification
 			# on multiple dates, and is not actually supported
@@ -49,7 +51,7 @@ class NotificationsController extends NotificationsAppController {
 			# thisDataLookup = where in thisData to find the starting id
 			# find = the query to run
 			# recipient = the field we were looking for from the find
-			
+
 			debug('Get rid of print_rReverse and do serialize() unserialize() instead');
 			break;
 			$recipientData = print_rReverse($notification['Notification']['recipients_array']);
@@ -59,7 +61,7 @@ class NotificationsController extends NotificationsAppController {
 				$this->_calculateSendDate($notification['Notification']['id'], $dateArray, $thisData);
 			} else {
 				if ($notification['Notification']['send_date'] < date('Y-m-d H:i:s')) {
-					$this->__setupMail($notification, $thisData, $recipientData);	
+					$this->__setupMail($notification, $thisData, $recipientData);
 				} else {
 					# no error notification here, it would be crazy
 					echo 'no mail to send';
@@ -67,11 +69,11 @@ class NotificationsController extends NotificationsAppController {
 			}
 		}
 	}
-	
-	
-	/** 
+
+
+	/**
 	 * Calculates the date that a notification should be sent.
-	 * 
+	 *
 	 * @param {int}		The numeric id of the notifcation to update
 	 * @param {array}	An array which can specify send date settings (has specific keys)
 	 * @param {array}	The data you might compare the date array against to find relative send dates.
@@ -79,7 +81,7 @@ class NotificationsController extends NotificationsAppController {
 	 * @todo			User unserialize instead of the print r reverse thing
 	 * @todo			Move as much as possible to the model
 	 */
-	function _calculateSendDate($id, $dateArray, $thisData) {		
+	function _calculateSendDate($id, $dateArray, $thisData) {
 		if (!empty($dataArray['schedule'])) {
 			$modelName = $dateArray['schedule']['model'];
 			$fieldName = $dateArray['schedule']['field'];
@@ -88,7 +90,7 @@ class NotificationsController extends NotificationsAppController {
 			$compareDate = strtotime($thisData[$modelName][$fieldName]);
 			# the calculated send date
 			$sendDate = date('Y-m-d H:i:s', strtotime('+'.$delay.' day', $compareDate));
-			# save the 
+			# save the
 			$this->request->data['Notification']['id'] = $id;
 			$this->request->data['Notification']['send_date'] = $sendDate;
 			if ($this->Notification->save($this->request->data)) {
@@ -103,12 +105,12 @@ class NotificationsController extends NotificationsAppController {
 			}
 		}
 	}
-		
-	
+
+
 	/*
 	 * Private function for allowing text replacement variables in the notifications
 	 * @TODO The replacement array thing is a mess, needs to be cleaned and made easier to read and input.
-	 * 
+	 *
 	 */
 	function __buildMessage($notification = null, $thisData) {
 		if(!empty($notification)) {
@@ -131,12 +133,12 @@ class NotificationsController extends NotificationsAppController {
 						App::import('Model', $replacement[1]);
 						$models = explode('.', $replacement[1]);
 						$replacement[1] = $models[1];
-						$this->$replacement[1] = new $replacement[1]();	
+						$this->$replacement[1] = new $replacement[1]();
 					} else {
 						App::import('Model', $replacement[1]);
-						$this->$replacement[1] = new $replacement[1]();	
+						$this->$replacement[1] = new $replacement[1]();
 					}
-					
+
 					if (!empty($replacement[3])) {
 						# need to find some data
 						$replaces[] = array(
@@ -149,7 +151,7 @@ class NotificationsController extends NotificationsAppController {
 						# the data already exists in the data array no need to look it up
 						$replaces[] = array('find' => $replacement[0], 'replace' => $thisData[$models[1]][$replacement[2]]);
 					}
-					
+
 				}
 				# do the replacement in the message
 				foreach ($replaces as $replace) {
@@ -162,8 +164,8 @@ class NotificationsController extends NotificationsAppController {
 			return false;
 		}
 	}
-	
-	function __setupMail($notification, $thisData, $recipientData) {		
+
+	function __setupMail($notification, $thisData, $recipientData) {
 		$to = $this->__buildRecipients($notification, $thisData, $recipientData);
 		$message = $this->__buildMessage($notification, $thisData);
 		$subject = $message['subject'];
@@ -177,39 +179,39 @@ class NotificationsController extends NotificationsAppController {
 					'sent_date' => date('Y-m-d H:i:s'),
 					'sent_to' => print_r($to, true),
 					));
-				$this->Notification->save();					
+				$this->Notification->save();
 			} else {
 				# there was an error
 			}
 			# there was no recipient
 		}
-    } 
-	
-	
+    }
+
+
 	/**
 	 * Actual email is sent.  DEPRECATED 6/12/2011
-	 * 
+	 *
 	 * @todo 		This needs to be deleted and make use of SwiftMailer vendor in app controller instead.
-	 
+
 	function __send($email, $subject, $message, $from = null) {
-		if (!empty($email['to'])) { 
+		if (!empty($email['to'])) {
 			$emailsTo = '';
 			foreach ($email['to'] as $emailTo) {
 				$emailsTo .= $emailTo.',';
 			}
 			$this->Email->to = $emailsTo;
 		}
-		if (!empty($email['cc'])) { 
-   			$this->Email->cc = $email['cc'];  
+		if (!empty($email['cc'])) {
+   			$this->Email->cc = $email['cc'];
 		}
-		if (!empty($email['bcc'])) { 
-   			$this->Email->bcc = $email['bcc'];  
+		if (!empty($email['bcc'])) {
+   			$this->Email->bcc = $email['bcc'];
 		}
     	$this->Email->subject = $subject;
 	    $this->Email->replyTo = $from;
 	    $this->Email->from = $from;
-	    $this->Email->template = 'default'; 
-	    $this->Email->sendAs = 'both'; 
+	    $this->Email->template = 'default';
+	    $this->Email->sendAs = 'both';
 	    $this->set('message', $message);
 		#$this->Email->delivery = 'debug';
 		#$this->Email->send();
@@ -224,12 +226,12 @@ class NotificationsController extends NotificationsAppController {
 		#debug($this->Session->read('Message.email'));
 		#break;
 	}*/
-	
-	
+
+
 	function __buildRecipients($notification = null, $thisData = null, $recipientData = null) {
 		if (!empty($recipientData)) {
 			foreach ($recipientData as $recipient) {
-				if (is_array($recipient['to']) || is_array($recipient['cc']) || is_array($recipient['bcc'])) {	
+				if (is_array($recipient['to']) || is_array($recipient['cc']) || is_array($recipient['bcc'])) {
 					if (!empty($recipient['to'])) {
 						$to['to'][] = $this->__lookupEmail($notification, $thisData, $recipient['to']);
 					}
@@ -256,12 +258,12 @@ class NotificationsController extends NotificationsAppController {
 			return false;
 		}
 	}
-		
-	
+
+
 	function __lookupEmail($notification, $thisData, $recipientLookupArray) {
-		# find the look up id for the first model with the right id to look for from thisData		
+		# find the look up id for the first model with the right id to look for from thisData
 		$lookupId = $thisData[trim($recipientLookupArray['thisDataLookup']['model'])][trim($recipientLookupArray['thisDataLookup']['field'])];
-		
+
 		$find = $recipientLookupArray['find'];
 		$importModel = array_keys($find);
 		$findQ = $find[$importModel[0]];
@@ -274,9 +276,9 @@ class NotificationsController extends NotificationsAppController {
 			App::import('Model', $importModel[0]);
 		}
 		$this->$importModel[0] = new $importModel[0];
-		
-		$recipientLookup = $this->$importModel[0]->find('first', $findQ); 
-		
+
+		$recipientLookup = $this->$importModel[0]->find('first', $findQ);
+
 		if (is_array($recipientLookup[$recipientLookupArray['recipient']['model']][0])) {
 			# to handle hasMany relationship
 			$email = $recipientLookup[$recipientLookupArray['recipient']['model']][0][$recipientLookupArray['recipient']['field']];
@@ -287,6 +289,6 @@ class NotificationsController extends NotificationsAppController {
 		return $email;
 	}
 
-	
+
 }
 ?>

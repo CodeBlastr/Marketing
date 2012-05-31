@@ -1,10 +1,11 @@
 <?php
+App::uses('NotificationsAppModel', 'Notifications.Model');
 
 class NotificationTemplate extends NotificationsAppModel {
 
-	var $name = 'NotificationTemplate';
+	public $name = 'NotificationTemplate';
 
-	var $hasMany = array(
+	public $hasMany = array(
 		'Notification'=>array(
 			'className'=>'Notifications.Notification',
 			'foreignKey'=>'notification_template_id',
@@ -12,7 +13,7 @@ class NotificationTemplate extends NotificationsAppModel {
 		),
 	);
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'NotifieeType' => array(
 			'className' => 'Enumeration',
 			'foreignKey' => 'notifiee_type_id',
@@ -77,7 +78,7 @@ class NotificationTemplate extends NotificationsAppModel {
 	 *
 	 * @todo  Right now this looks like data duplication.  Each of those fields could have a function act on them in the future so it is necessary for the time being to have this structure.
 	 */
-	function templateNotification($data) {
+	public function templateNotification($data) {
 		if (!empty($data['NotificationTemplate']['id'])) {
 			# find the template to make a notification from
 			$notificationTemplate = $this->find('first', array('conditions'=>array('id'=>$data['NotificationTemplate']['id'])));

@@ -1,4 +1,5 @@
 <?php
+App::uses('NotificationsAppController', 'Notifications.Controller');
 class NotificationTemplatesController extends NotificationsAppController {
 
 	public $name = 'NotificationTemplates';
@@ -7,12 +8,12 @@ class NotificationTemplatesController extends NotificationsAppController {
 	public $helpers = array('Cke');
 	public $paginate = array('limit' => 10, 'order' => array('NotificationTemplate.created' => 'desc'));
 
-	function index() {
+	public function index() {
 		$notificationTemplates = $this->NotificationTemplate->find('all');
 		$this->set('notificationTemplates', $this->paginate());
 	}
-	
-	function view($id = null) {
+
+	public function view($id = null) {
 		if (!$id) {
 			$this->flash(__('Invalid NotificationTemplate', true), array('action'=>'index'));
 		}
@@ -27,8 +28,8 @@ class NotificationTemplatesController extends NotificationsAppController {
 			$this->redirect(array('action'=>'index'));
 		}
 	}
-	
-	function edit($id = null)	{
+
+	public function edit($id = null)	{
 		if (!empty($this->request->data)) {
 			if ($this->NotificationTemplate->save($this->request->data))	{
 				$this->Session->setFlash(__('The NotificationTemplate has been updated.', true));
@@ -37,7 +38,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 				$this->Session->setFlash(__('The NotificationTemplate could not be saved. Please, try again.', true));
 			}
 		}
-		
+
 		if (empty($this->request->data)) {
 			$this->request->data = $this->NotificationTemplate->find('first', array(
 				'conditions' => array(
@@ -49,7 +50,7 @@ class NotificationTemplatesController extends NotificationsAppController {
 				)
 			);
 			$this->set('template', $this->request->data);
-			
+
 			$notificationRecipientLookups = $this->NotificationTemplate->NotificationRecipientLookup->find('list', array('conditions' => array('NotificationRecipientLookup.type' => 'NOTIFICATION_RECIPIENT_LOOKUP')));
 			$notifieeTypes = $this->NotificationTemplate->NotifieeType->find('list', array('conditions' => array('NotifieeType.type' => 'NOTIFIEE_TYPE')));
 			$notifieeFields = $this->NotificationTemplate->NotifieeField->find('list', array('conditions' => array('NotifieeField.type' => 'NOTIFIEE_FIELD')));
@@ -60,9 +61,9 @@ class NotificationTemplatesController extends NotificationsAppController {
 			$this->set(compact('notifieeTypes', 'notifieeFields', 'dateTypes', 'dateFields', 'plugins', 'controllers', 'notificationRecipientLookups'));
 		}
 	}
-	
 
-	function __getClassMethods($ctrlName = null) {
+
+	public function __getClassMethods($ctrlName = null) {
 		#find base methods for later removal
 		App::uses('File', 'Utility');
 		$Controllers = Configure::listObjects('controller');
@@ -72,14 +73,14 @@ class NotificationTemplatesController extends NotificationsAppController {
 		}
 		$baseMethods = get_class_methods('Controller');
 		#$baseMethods[] = 'build_acl';
-		
+
 		App::import('Controller', $ctrlName);
 		if (strlen(strstr($ctrlName, '.')) > 0) {
 			// plugin's controller
 			$num = strpos($ctrlName, '.');
 			$ctrlName = substr($ctrlName, $num+1);
 		}
-		
+
 		if (strpos($ctrlName, '_')) {
 			$ctrlName = Inflector::camelize($ctrlName);
 		}
@@ -99,8 +100,8 @@ class NotificationTemplatesController extends NotificationsAppController {
 		}
 		return $methods;
 	}
-	
-	function get_methods() {
+
+	public function get_methods() {
 		$ctrlName = $this->request->data['Condition']['controller'];
 		$methods = $this->__getClassMethods($ctrlName);
 		$this->set('methods', $methods);

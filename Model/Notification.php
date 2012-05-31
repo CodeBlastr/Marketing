@@ -1,8 +1,9 @@
 <?php
+App::uses('NotificationsAppModel', 'Notifications.Model');
 
 class Notification extends NotificationsAppModel {
-	var $name = 'Notification'; 
-	
+	var $name = 'Notification';
+
 	var $belongsTo = array(
 		'NotifieeType' => array(
 			'className' => 'Enumeration',
