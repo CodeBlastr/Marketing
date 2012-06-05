@@ -100,7 +100,7 @@ class NotificationTemplate extends NotificationsAppModel {
 				$notification['Notification']['date_array'] = $notificationTemplate['NotificationTemplate']['date_array'];
 
 				if ($this->Notification->save($notification)) {
-					echo 'this is in the notificaton template model';
+					#echo 'this is in the notificaton template model';
 					return true;
 				} else {
 					return false;
