@@ -84,6 +84,7 @@ class NotificationTemplate extends NotificationsAppModel {
 			$notificationTemplate = $this->find('first', array('conditions'=>array('id'=>$data['NotificationTemplate']['id'])));
 			if (!empty($notificationTemplate)) {
 				# setup notification data
+				$notification['Notification']['notification_template_id'] = $notificationTemplate['NotificationTemplate']['id'];
 				$notification['Notification']['is_sent'] = 0;
 				$notification['Notification']['send_date'] = null;
 				$notification['Notification']['data_array'] = serialize($data);
